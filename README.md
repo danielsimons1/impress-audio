@@ -13,7 +13,24 @@ Small addition to impress.js to allow for html5 audio in your presentation
 
 ```html
 <!-- Define audio tags in each of your slides -->
+<div id="impress" class="present">
 
+    
+    <div id="one" class="step" data-x="-1900" data-y="-150">
+        <audio>
+            <source src="audio/slide01.m4a" type="audio/mpeg">
+        </audio>
+        <q><img src="images/slide001.png"></q>
+    </div>
+
+    
+    <div id="two" class="step" data-x="-1000" data-y="-150">
+        <audio>
+            <source src="audio/slide01.m4a" type="audio/mpeg">
+        </audio>
+        <q><img src="images/slide002.png"></q>
+    </div>  
+</div>
 ```
 
 
