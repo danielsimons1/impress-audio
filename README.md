@@ -32,14 +32,14 @@ Small addition to impress.js to allow for html5 audio in your presentation
 ```
 
 <h3>Javascript</h3>
-```javascript
-<script src="js/impress.js"></ script>
-<script src="js/jquery.js"></ script>
-<script src="js/impress-audio.js"></ script>
+```html
+<script src="js/impress.js" />
+<script src="js/jquery.js" />
+<script src="js/impress-audio.js" />
 <script>
     impress().init();
     impress().play();
-</ script>
+</script>
 
 ```
 
