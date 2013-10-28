@@ -2,7 +2,9 @@
 	'use strict';
 
 	var isPlaying,
-		audio;
+		audio,
+		impressObj = impress(),
+		impressGoto = impressObj.goto;
 
 	$(document).on('impress:stepenter', function(event,f) {
 		var $currSlide = $(event.target);
@@ -14,7 +16,7 @@
 			audio.play();
 			if(isPlaying && $currSlide[0] != $currSlide.parent().children().last()[0]) {
 				audio.addEventListener('ended',function() {
-					impress().goto($currSlide.parent().children().index($currSlide.next()));
+					impressObj.goto($currSlide.next());
 					audio.removeEventListener('ended');
 				});
 			} else {
@@ -24,8 +26,18 @@
 		}
 	});
 
-	impress().play = function() {
+	impressObj.play = function() {
 		isPlaying = true;
 		this.goto(0);
 	};
+
+	impressObj.goto = function($el) {
+		if(isNaN($el)) {
+			impressGoto($el.parent().children().index($el), $el.data('transition-duration'));
+		} else {
+			impressGoto($el);			
+		}
+	}
+
+
 })(document, jQuery);
