@@ -1,0 +1,68 @@
+(function(document, $, undefined) {
+	'use strict';
+
+	var isPlaying,
+		$audio,
+		audio,
+		impressObj = impress(),
+		impressGoto = impressObj.goto;
+
+	$(document).on('impress:stepenter', function(event,f) {
+		var $currSlide = $(event.target);
+		if(audio) {
+			// Leave transition fx refers to attr "data-transition-leave-volumefx" of audio tag
+			if($audio.data('transition-leave-volumefx')) {
+				var leaveVolumeFx = $audio.data('transition-leave-volumefx');
+				$audio.animate({volume: 0}, 1000, leaveVolumeFx, function(){
+					var audio = $(this)[0];
+					audio.pause();
+					audio.currentTime = 0;
+				});
+			} else {
+				audio.pause();
+				audio.currentTime = 0;
+			}
+				
+			
+			
+		}
+		$audio = $currSlide.find('audio');
+		audio = $audio[0];
+		if(audio) {
+			// Enter transition fx refers to attr "data-transition-enter-volumefx" of audio tag
+			if($audio.data('transition-enter-volumefx')) {
+				var enterVolumeFx = $audio.data('transition-enter-volumefx');
+				audio.volume = 0;
+				audio.play();
+				$audio.animate({volume: 1}, 1000, enterVolumeFx);
+			} else {
+				audio.play();
+			}
+			
+			if(isPlaying && $currSlide[0] != $currSlide.parent().children().last()[0]) {
+				audio.addEventListener('ended',function() {
+					impressObj.goto($currSlide.next());
+					audio.removeEventListener('ended');
+				});
+			} else {
+				isPlaying = false;
+			}
+			
+		}
+	});
+
+	impressObj.play = function() {
+		isPlaying = true;
+		this.goto(0);
+	};
+
+	impressObj.goto = function($el) {
+		if(isNaN($el)) {
+			impressGoto($el.parent().children().index($el), $el.data('transition-duration'));
+		} else {
+			impressGoto($el);			
+		}
+	}
+
+
+})(document, jQuery);
